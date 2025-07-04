@@ -70,27 +70,6 @@ chmod +x enable-logging.sh
 
 ---
 
-## 📝 Medium Article Draft: Outline
-### Title: How to Launch and Secure an NGINX Web Server on AWS (Free Tier)
-
-**H2s:**
-- Why This Project Matters
-- Step 1: Launch a Free EC2 Instance
-- Step 2: SSH and Install NGINX
-- Step 3: Harden the Instance with Security Groups
-- Step 4: Enable Basic Monitoring with CloudWatch
-- What You Learned (and Next Steps)
-
-**Extras:**
-- JSON-LD Article schema
-- SEO metadata
-- Internal links to other cloud projects
-- External links to AWS docs and tutorials
-- FAQ (5–6 questions about EC2 setup, firewall rules, logging, etc.)
-
----
-
-## 🔧 Code Files
 
 ### `setup-nginx.sh`
 ```bash
