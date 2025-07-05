@@ -59,7 +59,9 @@ You’ll be taken to the configuration page. Here’s what to fill in:
 
 You’ll be redirected to a confirmation screen showing your instance is launching.
 
-#### **Step 2: Connect to Your EC2 via SSH**
+---
+
+#### **Step 2: Connect to Your EC2 via SSH (Linux/macOS)**
 
 Open your terminal (Linux/macOS) or Git Bash/WSL (on Windows). Navigate to the folder where your `.pem` file is stored.
 
@@ -85,6 +87,29 @@ ssh -i Test.pem ec2-user@18.226.185.195
 
 ![Step 2: SSH Terminal](./screenshots/step-2-ssh-terminal.png)
 
+---
+
+#### **Step 2.1: (Windows Alternative) Connect with PowerShell**
+
+If you're using Windows and prefer PowerShell over Git Bash or WSL, you can also connect to your EC2 instance using the following format:
+
+```powershell
+ssh -i "C:\Users\yourusername\Downloads\Test.pem" ec2-user@<your-ec2-public-ip>
+```
+
+Make sure to:
+
+* Replace `yourusername` with your actual Windows username.
+* Provide the correct path to your `.pem` file.
+
+When you run the command for the first time, you'll see a prompt about adding the host. Type `yes` to continue.
+
+![Step 2.1: PowerShell SSH](./screenshots/step-2-ssh-powershell.png)
+
+Note: Once you're inside the AWS terminal via SSH (whether PowerShell or Linux terminal), the remaining steps are the same because you're working within the same Linux EC2 environment.
+
+---
+
 #### **Step 3: Install NGINX Web Server**
 
 Once logged in via SSH, run the following commands:
@@ -105,6 +130,8 @@ Note: The installation process will output more content than shown here. That's 
 ![Step 3b: Install NGINX](./screenshots/step-3-nginx-install.png)
 ![Step 3c: Start and Enable NGINX](./screenshots/step-3-nginx-start-enable.png)
 
+---
+
 #### **Step 4: Test in Your Browser**
 
 Open your browser and go to:
@@ -116,6 +143,8 @@ http://<your-public-ip>
 You should see the default **NGINX Welcome Page** if everything was successful.
 
 ![Step 4: Browser Test](./screenshots/step-4-browser-test.png)
+
+---
 
 #### **Optional: Send Files to EC2**
 
@@ -133,6 +162,8 @@ scp -i /home/kali/PEM/Test.pem setup-nginx.sh ec2-user@<your-ec2-public-ip>:/hom
 
 Note: If the upload fails with "Permission denied", double check the IP is correct, the `.pem` file exists at the given path, and you're using `ec2-user` as the login.
 
+---
+
 ✅ *Next steps will cover hardening the server and managing deployment (firewall config, HTTPS setup, file permissions, etc.)*
 
 ---
@@ -141,7 +172,8 @@ Note: If the upload fails with "Permission denied", double check the IP is corre
 
 * **Create EC2 Instance:** Launch Amazon Linux 2 with default settings, open SSH & HTTP ports.
 * **Key Pair:** Download your `.pem` file (only once!) — this is your login key.
-* **SSH:** Use `chmod 400` and connect via `ssh -i path/to/key.pem ec2-user@<public-ip>`
+* **SSH (Linux):** Use `chmod 400` and connect via `ssh -i path/to/key.pem ec2-user@<public-ip>`
+* **SSH (PowerShell):** Use `ssh -i "C:\\Users\\yourusername\\Downloads\\Test.pem" ec2-user@<public-ip>`
 * **Install Web Server:** Run `yum update`, enable/install NGINX, then start the service.
 * **Test:** Go to `http://<your-public-ip>` to view the default NGINX page.
 * **Upload Files (Optional):** Use `scp` with your `.pem` file to send scripts/files to EC2.
