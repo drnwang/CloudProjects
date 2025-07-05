@@ -14,13 +14,13 @@ You’ll be taken to the configuration page. Here’s what to fill in:
 
    Name your instance. We used `Test` in this guide, but you can name it anything you want.
 
-   📷 `1-name-and-tags.png`
+   ![Step 1: Name and Tags](./1-name-and-tags.png)
 
 2. **Application and OS Images (Amazon Machine Image)**
 
    Select **Amazon Linux 2 AMI (HVM), SSD Volume Type**
 
-   📷 `2-ami-selection.png`
+   ![Step 2: AMI Selection](./2-ami-selection.png)
 
 3. **Instance Type**
 
@@ -38,7 +38,8 @@ You’ll be taken to the configuration page. Here’s what to fill in:
 
    Note: The `.pem` file will download automatically in your browser. Keep it safe. This is your only way to log in to your instance.
 
-   📷 `4-create-keypair.png`
+   ![Step 3: Keypair Dropdown](./3-keypair-dropdown.png)
+   ![Step 4: Create Keypair](./4-create-keypair.png)
 
 5. **Network Settings**
 
@@ -48,13 +49,13 @@ You’ll be taken to the configuration page. Here’s what to fill in:
 
    Note: If these ports aren’t enabled, you won’t be able to SSH into your server or view the website later. Double-check before continuing.
 
-   📷 `5-network-and-launch.png`
+   ![Step 5: Network and Launch](./5-network-and-launch.png)
 
 6. Leave the remaining settings as-is
 
 7. Click **Launch Instance** at the bottom of the page
 
-   📷 `6-launch-instance.png`
+   ![Step 6: Launch Instance](./6-launch-instance.png)
 
 You’ll be redirected to a confirmation screen showing your instance is launching.
 
@@ -82,7 +83,7 @@ Example:
 ssh -i Test.pem ec2-user@18.226.185.195
 ```
 
-📷 `step-2-ssh-terminal.png`
+![Step 2: SSH Terminal](./step-2-ssh-terminal.png)
 
 #### **Step 3: Install NGINX Web Server**
 
@@ -100,7 +101,9 @@ Note: `yum` is the package manager for Amazon Linux. `systemctl` is used to cont
 
 Note: The installation process will output more content than shown here. That's normal.
 
-📷 `step-3-nginx-update-enable.png` 📷 `step-3-nginx-install.png` 📷 `step-3-nginx-start-enable.png`
+![Step 3a: Update and Enable NGINX](./step-3-nginx-update-enable.png)
+![Step 3b: Install NGINX](./step-3-nginx-install.png)
+![Step 3c: Start and Enable NGINX](./step-3-nginx-start-enable.png)
 
 #### **Step 4: Test in Your Browser**
 
@@ -112,7 +115,7 @@ http://<your-public-ip>
 
 You should see the default **NGINX Welcome Page** if everything was successful.
 
-📷 `step-4-browser-test.png`
+![Step 4: Browser Test](./step-4-browser-test.png)
 
 #### **Optional: Send Files to EC2**
 
@@ -136,10 +139,9 @@ Note: If the upload fails with "Permission denied", double check the IP is corre
 
 ### TL;DR Summary
 
-- **Create EC2 Instance:** Launch Amazon Linux 2 with default settings, open SSH & HTTP ports.
-- **Key Pair:** Download your `.pem` file (only once!) — this is your login key.
-- **SSH:** Use `chmod 400` and connect via `ssh -i path/to/key.pem ec2-user@<public-ip>`
-- **Install Web Server:** Run `yum update`, enable/install NGINX, then start the service.
-- **Test:** Go to `http://<your-public-ip>` to view the default NGINX page.
-- **Upload Files (Optional):** Use `scp` with your `.pem` file to send scripts/files to EC2.
-
+* **Create EC2 Instance:** Launch Amazon Linux 2 with default settings, open SSH & HTTP ports.
+* **Key Pair:** Download your `.pem` file (only once!) — this is your login key.
+* **SSH:** Use `chmod 400` and connect via `ssh -i path/to/key.pem ec2-user@<public-ip>`
+* **Install Web Server:** Run `yum update`, enable/install NGINX, then start the service.
+* **Test:** Go to `http://<your-public-ip>` to view the default NGINX page.
+* **Upload Files (Optional):** Use `scp` with your `.pem` file to send scripts/files to EC2.
