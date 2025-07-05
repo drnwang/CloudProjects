@@ -14,7 +14,7 @@ You’ll be taken to the configuration page. Here’s what to fill in:
 
    Name your instance. We used `Test` in this guide, but you can name it anything you want.
 
-   ![Step 1: Name and Tags](./1-name-and-tags.png)
+   ![Step 1: Name and Tags](./screenshots/1-name-and-tags.png)
 
 2. **Application and OS Images (Amazon Machine Image)**
 
