@@ -20,7 +20,7 @@ You’ll be taken to the configuration page. Here’s what to fill in:
 
    Select **Amazon Linux 2 AMI (HVM), SSD Volume Type**
 
-   ![Step 2: AMI Selection](./2-ami-selection.png)
+   ![Step 2: AMI Selection](./screenshots/2-ami-selection.png)
 
 3. **Instance Type**
 
@@ -38,8 +38,8 @@ You’ll be taken to the configuration page. Here’s what to fill in:
 
    Note: The `.pem` file will download automatically in your browser. Keep it safe. This is your only way to log in to your instance.
 
-   ![Step 3: Keypair Dropdown](./3-keypair-dropdown.png)
-   ![Step 4: Create Keypair](./4-create-keypair.png)
+   ![Step 3: Keypair Dropdown](./screenshots/3-keypair-dropdown.png)
+   ![Step 4: Create Keypair](./screenshots/4-create-keypair.png)
 
 5. **Network Settings**
 
@@ -49,13 +49,13 @@ You’ll be taken to the configuration page. Here’s what to fill in:
 
    Note: If these ports aren’t enabled, you won’t be able to SSH into your server or view the website later. Double-check before continuing.
 
-   ![Step 5: Network and Launch](./5-network-and-launch.png)
+   ![Step 5: Network and Launch](./screenshots/5-network-and-launch.png)
 
 6. Leave the remaining settings as-is
 
 7. Click **Launch Instance** at the bottom of the page
 
-   ![Step 6: Launch Instance](./6-launch-instance.png)
+   ![Step 6: Launch Instance](./screenshots/6-launch-instance.png)
 
 You’ll be redirected to a confirmation screen showing your instance is launching.
 
@@ -83,7 +83,7 @@ Example:
 ssh -i Test.pem ec2-user@18.226.185.195
 ```
 
-![Step 2: SSH Terminal](./step-2-ssh-terminal.png)
+![Step 2: SSH Terminal](./screenshots/step-2-ssh-terminal.png)
 
 #### **Step 3: Install NGINX Web Server**
 
@@ -101,9 +101,9 @@ Note: `yum` is the package manager for Amazon Linux. `systemctl` is used to cont
 
 Note: The installation process will output more content than shown here. That's normal.
 
-![Step 3a: Update and Enable NGINX](./step-3-nginx-update-enable.png)
-![Step 3b: Install NGINX](./step-3-nginx-install.png)
-![Step 3c: Start and Enable NGINX](./step-3-nginx-start-enable.png)
+![Step 3a: Update and Enable NGINX](./screenshots/step-3-nginx-update-enable.png)
+![Step 3b: Install NGINX](./screenshots/step-3-nginx-install.png)
+![Step 3c: Start and Enable NGINX](./screenshots/step-3-nginx-start-enable.png)
 
 #### **Step 4: Test in Your Browser**
 
@@ -115,7 +115,7 @@ http://<your-public-ip>
 
 You should see the default **NGINX Welcome Page** if everything was successful.
 
-![Step 4: Browser Test](./step-4-browser-test.png)
+![Step 4: Browser Test](./screenshots/step-4-browser-test.png)
 
 #### **Optional: Send Files to EC2**
 
