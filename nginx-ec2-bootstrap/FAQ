@@ -1,0 +1,104 @@
+## ✅ Terraform + AWS: Common Issues FAQ
+
+### 🔑 **Q: Terraform says `The key pair 'xyz' does not exist`**
+
+**A:** Terraform does **not** create EC2 key pairs automatically. You need to:
+
+* Go to AWS EC2 Console → Key Pairs → Create a new key
+* Download the `.pem` file
+* Set the key name in `main.tf`:
+
+  ```hcl
+  key_name = "your-key-name"
+  ```
+* Ensure the `.pem` file exists at the path used in `private_key = file("...")`.
+
+---
+
+### 🧱 **Q: `InvalidAMIID.NotFound` — AMI ID is wrong?**
+
+**A:** Each AWS region has different AMI IDs. If you're using a hardcoded AMI:
+
+* Confirm your `provider` region (e.g. `us-east-1`)
+* Find the right Amazon Linux 2 AMI for that region from the EC2 Console or AWS docs
+* Replace in Terraform:
+
+  ```hcl
+  ami = "ami-xxxxxxxxxxxxxxxxx"
+  ```
+
+---
+
+### 🌐 **Q: My EC2 instance launches but I can't SSH into it**
+
+**A:** Possible causes:
+
+* Port 22 is not allowed in your security group
+* Key pair doesn't match what’s on the instance
+* Wrong username (`ec2-user` for Amazon Linux 2)
+
+Double-check:
+
+* Security group includes:
+
+  ```hcl
+  ingress {
+    from_port = 22
+    to_port   = 22
+    protocol  = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+  ```
+* You're using the correct `.pem` file and region
+
+---
+
+### 🚥 **Q: `remote-exec` fails with “Unit not found” or “command not found”**
+
+**A:** The provisioner ran before required packages were installed, or you're using the wrong base AMI.
+
+Fix:
+
+* For Amazon Linux 2, use `amazon-linux-extras` to install NGINX:
+
+  ```bash
+  sudo amazon-linux-extras enable nginx1
+  sudo yum install -y nginx
+  ```
+
+---
+
+### 📡 **Q: Terraform hangs during `terraform apply`**
+
+**A:** Most common causes:
+
+* The `.pem` file is not found or has wrong permissions
+* The EC2 instance is not yet reachable (still initializing)
+* You’re using a Windows-style path (backslashes) for SSH keys
+
+Fixes:
+
+* Use absolute paths with `/` instead of `\`:
+
+  ```hcl
+  private_key = file("C:/Users/yourname/.ssh/key.pem")
+  ```
+* Add a `connection { timeout = ... }` block if the instance takes longer to become reachable
+
+---
+
+### ☁️ **Q: Do I need to destroy instances to update them?**
+
+**A:** Not always. Terraform updates in-place when possible. But if `subnet_id`, `AMI`, or `key_name` changes, it **must destroy and recreate**.
+
+---
+
+### ↺ **Q: How do I output values like public IP?**
+
+Create an `outputs.tf` file:
+
+```hcl
+output "instance_ip" {
+  value = aws_instance.nginx_server.public_ip
+}
+```
