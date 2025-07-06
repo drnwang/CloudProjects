@@ -1,12 +1,33 @@
+# This Terraform configuration deploys an EC2 instance with NGINX on Amazon Linux 2
+# Here's what you must configure *outside* this file:
+
 provider "aws" {
-  region = "us-east-1"
+  region = "us-east-1" # <-- Set your AWS region (example: us-east-1)
 }
 
-resource "aws_key_pair" "deployer" {
-  key_name   = "deployer-key"
-  public_key = file("~/.ssh/id_rsa.pub")
+# Retrieves the default VPC
+data "aws_vpc" "default" {
+  default = true
 }
 
+# Retrieves the first public subnet from the default VPC
+data "aws_subnet" "default" {
+  filter {
+    name   = "vpc-id"
+    values = [data.aws_vpc.default.id]
+  }
+
+  filter {
+    name   = "default-for-az"
+    values = ["true"]
+  }
+
+  availability_zone = "us-east-1a" # <-- Replace with AZ in your selected region
+}
+
+#    AWS Key Pair must be created outside Terraform
+#    Create one in AWS Console or use `aws ec2 create-key-pair --key-name test-key`
+#    Save the private key as test-key.pem in ~/.ssh or appropriate local path
 resource "aws_security_group" "nginx_sg" {
   name        = "nginx-sg"
   description = "Allow SSH and HTTP"
@@ -33,20 +54,31 @@ resource "aws_security_group" "nginx_sg" {
   }
 }
 
-resource "aws_instance" "nginx_server" {
-  ami           = "ami-0c02fb55956c7d316"  # Amazon Linux 2 AMI in us-east-1
-  instance_type = "t2.micro"
-  key_name      = aws_key_pair.deployer.key_name
-  security_groups = [aws_security_group.nginx_sg.name]
 
-  user_data = file("${path.module}/setup-nginx.sh")
+resource "aws_instance" "nginx_server" {
+  ami                    = "ami-xxxxxxxxxxxxxxxxx" # <-- Replace with a current Amazon Linux 2 AMI ID for your region
+  instance_type          = "t2.micro"              # Free tier eligible instance type
+  key_name               = "your-key-name"         # <-- Replace with the name of your AWS EC2 key pair
+  vpc_security_group_ids = [aws_security_group.nginx_sg.id]
+  subnet_id              = data.aws_subnet.default.id
 
   tags = {
-    Name = "nginx-bootstrap-instance"
+    Name = "nginx-server"
   }
-}
 
-output "instance_ip" {
-  value = aws_instance.nginx_server.public_ip
-  description = "Public IP of the EC2 instance"
+  provisioner "remote-exec" {
+    inline = [
+      "sudo yum update -y",
+      "sudo yum install -y nginx",
+      "sudo systemctl start nginx",
+      "sudo systemctl enable nginx"
+    ]
+
+    connection {
+      type        = "ssh"
+      user        = "ec2-user"
+      private_key = file("~/.ssh/your-key.pem") # <-- Update with path to your private key
+      host        = self.public_ip
+    }
+  }
 }
