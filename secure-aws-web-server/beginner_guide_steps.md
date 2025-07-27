@@ -116,7 +116,7 @@ Once logged in via SSH, run the following commands:
 
 ```bash
 sudo yum update -y
-sudo amazon-linux-extras enable nginx1
+sudo amazon-linux-extras enable nginx1 -y
 sudo yum install -y nginx
 sudo systemctl start nginx
 sudo systemctl enable nginx

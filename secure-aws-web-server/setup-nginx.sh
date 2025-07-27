@@ -2,7 +2,7 @@
 # Install and start NGINX on Amazon Linux 2
 
 sudo yum update -y
-sudo amazon-linux-extras enable nginx1
+sudo amazon-linux-extras enable nginx1 -y
 sudo yum install -y nginx
 sudo systemctl start nginx
 sudo systemctl enable nginx
