@@ -1,0 +1,46 @@
+# Validates every Terraform project and scans it for security misconfigurations.
+name: Terraform checks
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  validate:
+    name: Format and validate
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        project: [aws/nginx-ec2-bootstrap, aws/security-monitoring]
+    defaults:
+      run:
+        working-directory: ${{ matrix.project }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: hashicorp/setup-terraform@v3
+      - name: terraform fmt
+        run: terraform fmt -check -diff
+      - name: terraform init
+        run: terraform init -backend=false -input=false
+      - name: terraform validate
+        run: terraform validate
+
+  checkov:
+    name: Security scan (Checkov)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Run Checkov on Terraform
+        uses: bridgecrewio/checkov-action@v12
+        with:
+          directory: aws
+          framework: terraform
+          quiet: true
+          # Report findings without failing the build; review them in the job log.
+          soft_fail: true
