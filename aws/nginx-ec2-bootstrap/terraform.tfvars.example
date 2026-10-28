@@ -1,0 +1,4 @@
+# Copy to terraform.tfvars and fill in. terraform.tfvars is git-ignored.
+ami_id           = "ami-xxxxxxxxxxxxxxxxx"
+key_name         = "your-key-name"
+private_key_path = "~/.ssh/your-key.pem"

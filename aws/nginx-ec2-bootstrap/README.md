@@ -20,6 +20,8 @@ It’s designed as a beginner-friendly, reproducible walkthrough to learn how cl
 ```
 nginx-ec2-bootstrap/
 ├── main.tf              # Terraform script to create the EC2 instance
+├── variables.tf         # AMI ID, key pair name, private key path
+├── terraform.tfvars.example  # Copy to terraform.tfvars and fill in
 ├── setup-nginx.sh       # Bash script to install and start NGINX
 ├── outputs.tf           # (optional) Outputs for instance IP
 └── README.md            # This guide
@@ -37,13 +39,21 @@ nginx-ec2-bootstrap/
 
 ## 🚀 Steps
 
-### 1. Initialize Terraform
+### 1. Set your values
+
+```bash
+cp terraform.tfvars.example terraform.tfvars
+```
+
+Edit `terraform.tfvars` with your Amazon Linux 2 AMI ID, EC2 key pair name, and private key path.
+
+### 2. Initialize Terraform
 
 ```bash
 terraform init
 ```
 
-### 2. Review and Apply Plan
+### 3. Review and Apply Plan
 
 ```bash
 terraform plan
@@ -52,7 +62,7 @@ terraform apply
 
 Choose `yes` when prompted.
 
-### 3. SSH Into the Instance (optional)
+### 4. SSH Into the Instance (optional)
 
 ```bash
 ssh -i your-key.pem ec2-user@<public-ip>
@@ -60,7 +70,7 @@ ssh -i your-key.pem ec2-user@<public-ip>
 
 Make sure port 22 is allowed in your security group.
 
-### 4. Verify NGINX is Running
+### 5. Verify NGINX is Running
 
 ```bash
 curl http://<public-ip>

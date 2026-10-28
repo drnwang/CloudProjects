@@ -56,9 +56,9 @@ resource "aws_security_group" "nginx_sg" {
 
 
 resource "aws_instance" "nginx_server" {
-  ami                    = "ami-xxxxxxxxxxxxxxxxx" # <-- Replace with a current Amazon Linux 2 AMI ID for your region
-  instance_type          = "t2.micro"              # Free tier eligible instance type
-  key_name               = "your-key-name"         # <-- Replace with the name of your AWS EC2 key pair
+  ami                    = var.ami_id   # set in terraform.tfvars
+  instance_type          = "t2.micro"   # Free tier eligible instance type
+  key_name               = var.key_name # set in terraform.tfvars
   vpc_security_group_ids = [aws_security_group.nginx_sg.id]
   subnet_id              = data.aws_subnet.default.id
 
@@ -77,7 +77,7 @@ resource "aws_instance" "nginx_server" {
     connection {
       type        = "ssh"
       user        = "ec2-user"
-      private_key = file("~/.ssh/your-key.pem") # <-- Update with path to your private key
+      private_key = file(var.private_key_path) # set in terraform.tfvars
       host        = self.public_ip
     }
   }
